@@ -2,12 +2,12 @@ package controller;
 
 import view.ExpenseTrackerView;
 
+import java.util.ArrayList;
 import java.util.List;
-
-
 
 import model.ExpenseTrackerModel;
 import model.Transaction;
+
 public class ExpenseTrackerController {
   
   private ExpenseTrackerModel model;
@@ -16,25 +16,61 @@ public class ExpenseTrackerController {
   public ExpenseTrackerController(ExpenseTrackerModel model, ExpenseTrackerView view) {
     this.model = model;
     this.view = view;
-
-    // Set up view event handlers
   }
 
   public void refresh() {
-
-    // Get transactions from model
     List<Transaction> transactions = model.getTransactions();
-
-    // Pass to view
     view.refreshTable(transactions);
-
   }
 
-  public void addTransaction(Transaction t) {
+  public boolean addTransaction(double amount, String category) {
+    if (!InputValidation.isValidAmount(amount)) {
+      return false;
+    }
+    if (!InputValidation.isValidCategory(category)) {
+      return false;
+    }
+    
+    Transaction t = new Transaction(amount, category);
     model.addTransaction(t);
     view.getTableModel().addRow(new Object[]{t.getAmount(), t.getCategory(), t.getTimestamp()});
     refresh();
+    return true;
+  }
+
+  // Other controller methods
+
+  // public void applyDateFilter(String dateFilterInput) {
+  //   // Create a DateFilter instance based on the user input
+  //   DateFilter dateFilter = new DateFilter(dateFilterInput);
+
+  //   // Get transactions from model
+  //   List<Transaction> transactions = model.getTransactions(); 
+
+  //   // Apply the filter and pass the filtered transactions to the view
+  //   List<Transaction> filteredTransactions = dateFilter.filter(transactions);
+  //   view.refreshTable(filteredTransactions);
+  // }
+
+  public void applyCategoryFilter(String categoryFilterInput) {
+    // Create a CategoryFilter instance based on the user input
+    CategoryFilter categoryFilter = new CategoryFilter(categoryFilterInput);
+
+    // Get transactions from model
+    List<Transaction> transactions = model.getTransactions(); 
+
+    // Apply the filter and pass the filtered transactions to the view
+    List<Transaction> filteredTransactions = categoryFilter.filter(transactions);
+      // Get indices of filtered transactions
+    List<Integer> rowIndexes = new ArrayList<>();
+    for (Transaction t : filteredTransactions) {
+        int rowIndex = transactions.indexOf(t);
+        if (rowIndex != -1) {
+            rowIndexes.add(rowIndex);
+        }
+    }
+    // view.refreshTable(filteredTransactions);
+    view.highlightRows(rowIndexes);
   }
   
-  // Other controller methods
 }
