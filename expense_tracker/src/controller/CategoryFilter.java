@@ -14,6 +14,7 @@ public class CategoryFilter implements TransactionFilter {
 
     @Override
     public List<Transaction> filter(List<Transaction> transactions) {
+
         List<Transaction> filteredTransactions = new ArrayList<>();
 
         for (Transaction transaction : transactions) {
