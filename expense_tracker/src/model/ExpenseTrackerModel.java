@@ -20,7 +20,10 @@ public class ExpenseTrackerModel {
   }
 
   public List<Transaction> getTransactions() {
-    return transactions;
+    //encapsulation
+    //return a copy of the list of transactions instead of actual list
+    //this will ensure data integrity
+    return new ArrayList<>(transactions);
   }
 
 }
