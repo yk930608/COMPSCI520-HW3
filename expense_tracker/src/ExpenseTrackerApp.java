@@ -1,6 +1,7 @@
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+import controller.AmountFilter;
 // import controller.DateFilter;
 import controller.CategoryFilter;
 import controller.ExpenseTrackerController;
@@ -15,6 +16,7 @@ public class ExpenseTrackerApp {
     // Create MVC components
     ExpenseTrackerModel model = new ExpenseTrackerModel();
     DefaultTableModel tableModel = new DefaultTableModel();
+    tableModel.addColumn("Serial");
     tableModel.addColumn("Amount");
     tableModel.addColumn("Category");
     tableModel.addColumn("Date");
@@ -28,8 +30,20 @@ public class ExpenseTrackerApp {
     // Add action listener to the "Apply Category Filter" button
     view.addApplyCategoryFilterListener(e -> {
       String categoryFilterInput = view.getCategoryFilterInput();
+      CategoryFilter categoryFilter = new CategoryFilter(categoryFilterInput);
       if (categoryFilterInput != null) {
-          controller.applyCategoryFilter(categoryFilterInput);
+          // controller.applyCategoryFilter(categoryFilterInput);
+          controller.applyFilter(categoryFilter);
+      }
+    });
+
+    // Add action listener to the "Apply Amount Filter" button
+    view.addApplyAmountFilterListener(e -> {
+      double amountFilterInput = view.getAmountFilterInput();
+      AmountFilter amountFilter = new AmountFilter(amountFilterInput);
+      if (amountFilterInput != 0.0) {
+          // controller.applyAmountFilter(amountFilterInput);
+          controller.applyFilter(amountFilter);
       }
     });
 

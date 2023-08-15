@@ -38,39 +38,52 @@ public class ExpenseTrackerController {
     return true;
   }
 
-  // Other controller methods
+  public void applyFilter(TransactionFilter filter) {
+    List<Transaction> transactions = model.getTransactions();
+    List<Transaction> filteredTransactions = filter.filter(transactions);
+    List<Integer> rowIndexes = new ArrayList<>();
+    for (Transaction t : filteredTransactions) {
+      int rowIndex = transactions.indexOf(t);
+      if (rowIndex != -1) {
+        rowIndexes.add(rowIndex);
+      }
+    }
+    view.highlightRows(rowIndexes);
+  }
 
-  // public void applyDateFilter(String dateFilterInput) {
-  //   // Create a DateFilter instance based on the user input
-  //   DateFilter dateFilter = new DateFilter(dateFilterInput);
+  // public void applyCategoryFilter(String categoryFilterInput) {
+  //   // Create a CategoryFilter instance based on the user input
+  //   CategoryFilter categoryFilter = new CategoryFilter(categoryFilterInput);
 
   //   // Get transactions from model
   //   List<Transaction> transactions = model.getTransactions(); 
 
   //   // Apply the filter and pass the filtered transactions to the view
-  //   List<Transaction> filteredTransactions = dateFilter.filter(transactions);
-  //   view.refreshTable(filteredTransactions);
+  //   List<Transaction> filteredTransactions = categoryFilter.filter(transactions);
+  //     // Get indices of filtered transactions
+  //   List<Integer> rowIndexes = new ArrayList<>();
+  //   for (Transaction t : filteredTransactions) {
+  //       int rowIndex = transactions.indexOf(t);
+  //       if (rowIndex != -1) {
+  //           rowIndexes.add(rowIndex);
+  //       }
+  //   }
+  //   // view.refreshTable(filteredTransactions);
+  //   view.highlightRows(rowIndexes);
   // }
 
-  public void applyCategoryFilter(String categoryFilterInput) {
-    // Create a CategoryFilter instance based on the user input
-    CategoryFilter categoryFilter = new CategoryFilter(categoryFilterInput);
-
-    // Get transactions from model
-    List<Transaction> transactions = model.getTransactions(); 
-
-    // Apply the filter and pass the filtered transactions to the view
-    List<Transaction> filteredTransactions = categoryFilter.filter(transactions);
-      // Get indices of filtered transactions
-    List<Integer> rowIndexes = new ArrayList<>();
-    for (Transaction t : filteredTransactions) {
-        int rowIndex = transactions.indexOf(t);
-        if (rowIndex != -1) {
-            rowIndexes.add(rowIndex);
-        }
-    }
-    // view.refreshTable(filteredTransactions);
-    view.highlightRows(rowIndexes);
-  }
+  // public void applyAmountFilter(double amountFilterInput){
+  //   AmountFilter amountFilter = new AmountFilter(amountFilterInput);
+  //   List<Transaction> transactions = model.getTransactions();
+  //   List<Transaction> filteredTransactions = amountFilter.filter(transactions);
+  //   List<Integer> rowIndexes = new ArrayList<>();
+  //   for(Transaction t : filteredTransactions){
+  //     int rowIndex = transactions.indexOf(t);
+  //     if(rowIndex != -1){
+  //       rowIndexes.add(rowIndex);
+  //     }
+  //   }
+  //   view.highlightRows(rowIndexes);
+  // }
   
 }
