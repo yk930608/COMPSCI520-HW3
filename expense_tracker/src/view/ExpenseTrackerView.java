@@ -4,8 +4,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import controller.TransactionFilter;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
@@ -25,6 +23,9 @@ public class ExpenseTrackerView extends JFrame {
   // private JTextField dateFilterField;
   private JTextField categoryFilterField;
   private JButton categoryFilterBtn;
+
+  private JTextField amountFilterField;
+  private JButton amountFilterBtn;
 
   
   
@@ -80,6 +81,10 @@ public class ExpenseTrackerView extends JFrame {
     JLabel categoryFilterLabel = new JLabel("Filter by Category:");
     categoryFilterField = new JTextField(10);
     categoryFilterBtn = new JButton("Filter by Category");
+
+    JLabel amountFilterLabel = new JLabel("Filter by Amount:");
+    amountFilterField = new JTextField(10);
+    amountFilterBtn = new JButton("Filter by Amount");
     
 
 
@@ -93,9 +98,8 @@ public class ExpenseTrackerView extends JFrame {
     inputPanel.add(categoryLabel); 
     inputPanel.add(categoryField);
     inputPanel.add(addTransactionBtn);
-    // inputPanel.add(categoryFilterLabel);
-    // inputPanel.add(categoryFilterField);
     inputPanel.add(categoryFilterBtn);
+    inputPanel.add(amountFilterBtn);
 
     JPanel buttonPanel = new JPanel();
     buttonPanel.add(addTransactionBtn);
@@ -121,14 +125,41 @@ public class ExpenseTrackerView extends JFrame {
   public String getCategoryFilterInput() {
     return JOptionPane.showInputDialog(this, "Enter Category Filter:");
 }
+
+
+  public void addApplyAmountFilterListener(ActionListener listener) {
+    amountFilterBtn.addActionListener(listener);
+  }
+
+  public double getAmountFilterInput() {
+    String input = JOptionPane.showInputDialog(this, "Enter Amount Filter:");
+    try {
+        return Double.parseDouble(input);
+    } catch (NumberFormatException e) {
+        // Handle parsing error here
+        // You can show an error message or return a default value
+        return 0.0; // Default value (or any other appropriate value)
+    }
+  }
+
   public void refreshTable(List<Transaction> transactions) {
       // Clear existing rows
       model.setRowCount(0);
+      // Get row count
+      int rowNum = model.getRowCount();
+      double totalCost=0;
+      // Calculate total cost
+      for(Transaction t : transactions) {
+        totalCost+=t.getAmount();
+      }
   
       // Add rows from transactions list
       for(Transaction t : transactions) {
-        model.addRow(new Object[]{t.getAmount(), t.getCategory(), t.getTimestamp()}); 
+        model.addRow(new Object[]{rowNum+=1,t.getAmount(), t.getCategory(), t.getTimestamp()}); 
       }
+      // Add total row
+      Object[] totalRow = {"Total", null, null, totalCost};
+      model.addRow(totalRow);
   
       // Fire table update
       transactionsTable.updateUI();
