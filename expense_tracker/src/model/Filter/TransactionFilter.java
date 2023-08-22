@@ -1,4 +1,4 @@
-package controller;
+package model.Filter;
 
 import java.util.List;
 
