@@ -28,7 +28,71 @@ public class ExpenseTrackerView extends JFrame {
   private JButton amountFilterBtn;
 
   
+
+  public ExpenseTrackerView() {
+    setTitle("Expense Tracker"); // Set title
+    setSize(600, 400); // Make GUI larger
+
+    String[] columnNames = {"serial", "Amount", "Category", "Date"};
+    this.model = new DefaultTableModel(columnNames, 0);
+
+    
+    // Create table
+    transactionsTable = new JTable(model);
+
+    addTransactionBtn = new JButton("Add Transaction");
+
+    // Create UI components
+    JLabel amountLabel = new JLabel("Amount:");
+    NumberFormat format = NumberFormat.getNumberInstance();
+
+    amountField = new JFormattedTextField(format);
+    amountField.setColumns(10);
+
+    
+    JLabel categoryLabel = new JLabel("Category:");
+    categoryField = new JTextField(10);
+    
+
+    JLabel categoryFilterLabel = new JLabel("Filter by Category:");
+    categoryFilterField = new JTextField(10);
+    categoryFilterBtn = new JButton("Filter by Category");
+
+    JLabel amountFilterLabel = new JLabel("Filter by Amount:");
+    amountFilterField = new JTextField(10);
+    amountFilterBtn = new JButton("Filter by Amount");
   
+
+  
+    // Layout components
+    JPanel inputPanel = new JPanel();
+    inputPanel.add(amountLabel);
+    inputPanel.add(amountField);
+    inputPanel.add(categoryLabel); 
+    inputPanel.add(categoryField);
+    inputPanel.add(addTransactionBtn);
+
+    JPanel buttonPanel = new JPanel();
+    buttonPanel.add(categoryFilterBtn);
+    buttonPanel.add(amountFilterBtn);
+  
+    // Add panels to frame
+    add(inputPanel, BorderLayout.NORTH);
+    add(new JScrollPane(transactionsTable), BorderLayout.CENTER); 
+    add(buttonPanel, BorderLayout.SOUTH);
+  
+    // Set frame properties
+    setSize(600, 400); // Increase the size for better visibility
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setVisible(true);
+  
+  
+  }
+
+  public DefaultTableModel getTableModel() {
+    return model;
+  }
+    
 
   public List<Transaction> getTransactionsTable() {
     return (List<Transaction>) transactionsTable;
@@ -54,68 +118,6 @@ public class ExpenseTrackerView extends JFrame {
 
   public void setCategoryField(JTextField categoryField) {
     this.categoryField = categoryField;
-  }
-
-  public ExpenseTrackerView(DefaultTableModel model) {
-    setTitle("Expense Tracker"); // Set title
-    setSize(600, 400); // Make GUI larger
-    this.model = model;
-
-    addTransactionBtn = new JButton("Add Transaction");
-
-    // Create UI components
-    JLabel amountLabel = new JLabel("Amount:");
-    NumberFormat format = NumberFormat.getNumberInstance();
-
-    amountField = new JFormattedTextField(format);
-    amountField.setColumns(10);
-
-    
-    JLabel categoryLabel = new JLabel("Category:");
-    categoryField = new JTextField(10);
-    
-    // JLabel dateFilterLabel = new JLabel("Filter by Date:");
-    // dateFilterField = new JTextField(10);
-    // JButton dateFilterBtn = new JButton("Filter by Date");
-
-    JLabel categoryFilterLabel = new JLabel("Filter by Category:");
-    categoryFilterField = new JTextField(10);
-    categoryFilterBtn = new JButton("Filter by Category");
-
-    JLabel amountFilterLabel = new JLabel("Filter by Amount:");
-    amountFilterField = new JTextField(10);
-    amountFilterBtn = new JButton("Filter by Amount");
-    
-
-
-    // Create table
-    transactionsTable = new JTable(model);
-  
-    // Layout components
-    JPanel inputPanel = new JPanel();
-    inputPanel.add(amountLabel);
-    inputPanel.add(amountField);
-    inputPanel.add(categoryLabel); 
-    inputPanel.add(categoryField);
-    inputPanel.add(addTransactionBtn);
-    inputPanel.add(categoryFilterBtn);
-    inputPanel.add(amountFilterBtn);
-
-    JPanel buttonPanel = new JPanel();
-    buttonPanel.add(addTransactionBtn);
-  
-    // Add panels to frame
-    add(inputPanel, BorderLayout.NORTH);
-    add(new JScrollPane(transactionsTable), BorderLayout.CENTER); 
-    add(buttonPanel, BorderLayout.SOUTH);
-  
-    // Set frame properties
-    setSize(800, 300); // Increase the size for better visibility
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setVisible(true);
-  
-
-  
   }
 
   public void addApplyCategoryFilterListener(ActionListener listener) {
@@ -170,9 +172,7 @@ public class ExpenseTrackerView extends JFrame {
   public JButton getAddTransactionBtn() {
     return addTransactionBtn;
   }
-  public DefaultTableModel getTableModel() {
-    return model;
-  }
+
 
 public void highlightRows(List<Integer> rowIndexes) {
     transactionsTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {

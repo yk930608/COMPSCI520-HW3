@@ -1,26 +1,26 @@
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import controller.AmountFilter;
-// import controller.DateFilter;
-import controller.CategoryFilter;
 import controller.ExpenseTrackerController;
 import model.ExpenseTrackerModel;
 import view.ExpenseTrackerView;
 import model.Transaction;
+import model.Filter.AmountFilter;
+import model.Filter.CategoryFilter;
 
 public class ExpenseTrackerApp {
 
+  /**
+   * @param args
+   */
   public static void main(String[] args) {
     
     // Create MVC components
     ExpenseTrackerModel model = new ExpenseTrackerModel();
-    DefaultTableModel tableModel = new DefaultTableModel();
-    tableModel.addColumn("Serial");
-    tableModel.addColumn("Amount");
-    tableModel.addColumn("Category");
-    tableModel.addColumn("Date");
-    ExpenseTrackerView view = new ExpenseTrackerView(tableModel);
+    // DefaultTableModel tableModel = new DefaultTableModel();
+    // String[] columnNames = {"serial", "Amount", "Category", "Date"};
+    // DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+    ExpenseTrackerView view = new ExpenseTrackerView();
     ExpenseTrackerController controller = new ExpenseTrackerController(model, view);
     
 

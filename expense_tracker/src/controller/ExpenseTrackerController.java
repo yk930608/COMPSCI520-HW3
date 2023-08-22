@@ -7,6 +7,7 @@ import java.util.List;
 
 import model.ExpenseTrackerModel;
 import model.Transaction;
+import model.Filter.TransactionFilter;
 
 public class ExpenseTrackerController {
   
