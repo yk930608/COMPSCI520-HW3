@@ -21,11 +21,7 @@ public class ExpenseTrackerModel {
   }
 
   public List<Transaction> getTransactions() {
-    //encapsulation
-    //return a copy of the list of transactions instead of actual list
-    //Make the copied list unmodifiable
-    //this will ensure data integrity
-    // return new ArrayList<>(transactions);
+    //encapsulation - data integrity
     return Collections.unmodifiableList(new ArrayList<>(transactions));
   }
 
