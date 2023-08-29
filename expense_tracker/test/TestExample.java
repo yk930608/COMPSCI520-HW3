@@ -1,14 +1,13 @@
-package test;
-import org.junit.After;
+// package test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import controller.ExpenseTrackerController;
-
-import static org.junit.Assert.*;
-
-import java.util.List;
-
 import model.ExpenseTrackerModel;
 import model.Transaction;
 import view.ExpenseTrackerView;
