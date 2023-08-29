@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Transaction;
+import controller.InputValidation;
 
 public class AmountFilter implements TransactionFilter{
     private double amountFilter;
 
     public AmountFilter(double amountFilter){
-        this.amountFilter = amountFilter;
+        if(!InputValidation.isValidAmount(amountFilter)){
+            throw new IllegalArgumentException("Invalid amount filter");
+        } else {
+            this.amountFilter = amountFilter;
+        }
     }
     @Override
     public List<Transaction> filter(List<Transaction> transactions){

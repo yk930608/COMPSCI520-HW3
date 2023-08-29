@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Transaction;
+import controller.InputValidation;
 
 public class CategoryFilter implements TransactionFilter {
     private String categoryFilter;
 
     public CategoryFilter(String categoryFilter) {
-        this.categoryFilter = categoryFilter;
+        if(!InputValidation.isValidCategory(categoryFilter)){
+            throw new IllegalArgumentException("Invalid category filter");
+        }else{
+            this.categoryFilter = categoryFilter;
+        }
     }
 
     @Override
