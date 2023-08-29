@@ -1,10 +1,7 @@
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-
 import controller.ExpenseTrackerController;
 import model.ExpenseTrackerModel;
 import view.ExpenseTrackerView;
-import model.Transaction;
 import model.Filter.AmountFilter;
 import model.Filter.CategoryFilter;
 
@@ -17,9 +14,6 @@ public class ExpenseTrackerApp {
     
     // Create MVC components
     ExpenseTrackerModel model = new ExpenseTrackerModel();
-    // DefaultTableModel tableModel = new DefaultTableModel();
-    // String[] columnNames = {"serial", "Amount", "Category", "Date"};
-    // DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
     ExpenseTrackerView view = new ExpenseTrackerView();
     ExpenseTrackerController controller = new ExpenseTrackerController(model, view);
     
@@ -27,25 +21,7 @@ public class ExpenseTrackerApp {
     // Initialize view
     view.setVisible(true);
 
-    // Add action listener to the "Apply Category Filter" button
-    view.addApplyCategoryFilterListener(e -> {
-      String categoryFilterInput = view.getCategoryFilterInput();
-      CategoryFilter categoryFilter = new CategoryFilter(categoryFilterInput);
-      if (categoryFilterInput != null) {
-          // controller.applyCategoryFilter(categoryFilterInput);
-          controller.applyFilter(categoryFilter);
-      }
-    });
 
-    // Add action listener to the "Apply Amount Filter" button
-    view.addApplyAmountFilterListener(e -> {
-      double amountFilterInput = view.getAmountFilterInput();
-      AmountFilter amountFilter = new AmountFilter(amountFilterInput);
-      if (amountFilterInput != 0.0) {
-          // controller.applyAmountFilter(amountFilterInput);
-          controller.applyFilter(amountFilter);
-      }
-    });
 
     // Handle add transaction button clicks
     view.getAddTransactionBtn().addActionListener(e -> {
@@ -61,6 +37,35 @@ public class ExpenseTrackerApp {
         view.toFront();
       }
     });
+
+      // Add action listener to the "Apply Category Filter" button
+    view.addApplyCategoryFilterListener(e -> {
+      try{
+      String categoryFilterInput = view.getCategoryFilterInput();
+      CategoryFilter categoryFilter = new CategoryFilter(categoryFilterInput);
+      if (categoryFilterInput != null) {
+          // controller.applyCategoryFilter(categoryFilterInput);
+          controller.applyFilter(categoryFilter);
+      }
+     }catch(IllegalArgumentException exception) {
+    JOptionPane.showMessageDialog(view, exception.getMessage());
+    view.toFront();
+   }});
+
+
+    // Add action listener to the "Apply Amount Filter" button
+    view.addApplyAmountFilterListener(e -> {
+      try{
+      double amountFilterInput = view.getAmountFilterInput();
+      AmountFilter amountFilter = new AmountFilter(amountFilterInput);
+      if (amountFilterInput != 0.0) {
+          controller.applyFilter(amountFilter);
+      }
+    }catch(IllegalArgumentException exception) {
+    JOptionPane.showMessageDialog(view,exception.getMessage());
+    view.toFront();
+   }});
+    
 
   }
 }
