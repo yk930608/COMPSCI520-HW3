@@ -73,8 +73,8 @@ public class ExpenseTrackerView extends JFrame {
     inputPanel.add(addTransactionBtn);
 
     JPanel buttonPanel = new JPanel();
-    buttonPanel.add(categoryFilterBtn);
     buttonPanel.add(amountFilterBtn);
+    buttonPanel.add(categoryFilterBtn);
   
     // Add panels to frame
     add(inputPanel, BorderLayout.NORTH);
@@ -174,23 +174,23 @@ public class ExpenseTrackerView extends JFrame {
   }
 
 
-public void highlightRows(List<Integer> rowIndexes) {
-    transactionsTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                                                       boolean hasFocus, int row, int column) {
-            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            if (rowIndexes.contains(row)) {
-                c.setBackground(new Color(173, 255, 168)); // Light green
-            } else {
-                c.setBackground(table.getBackground());
-            }
-            return c;
-        }
-    });
+  public void highlightRows(List<Integer> rowIndexes) {
+      transactionsTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+          @Override
+          public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                        boolean hasFocus, int row, int column) {
+              Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+              if (rowIndexes.contains(row)) {
+                  c.setBackground(new Color(173, 255, 168)); // Light green
+              } else {
+                  c.setBackground(table.getBackground());
+              }
+              return c;
+          }
+      });
 
-    transactionsTable.repaint();
-}
+      transactionsTable.repaint();
+  }
 
 
 }

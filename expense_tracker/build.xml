@@ -1,5 +1,6 @@
 <project name="ExpenseTrackerApp" default="compile" basedir=".">
 
+    <!-- <property name="junit.jar" value="./lib/junit-4.11.jar"/> -->
     <property name="junit.jar" value="./lib/junit-4.11.jar"/>
 
   
