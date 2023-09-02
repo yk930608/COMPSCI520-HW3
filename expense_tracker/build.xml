@@ -32,7 +32,7 @@
 
 <!-- Compile the project -->
     <target name="compile" depends="init" description="Compile all sources">
-        <javac source="17" target ="17" includeantruntime="true" 
+        <javac includeantruntime="true" 
                srcdir="src"
                destdir="bin"
                debug="yes">
@@ -42,7 +42,7 @@
 
 <!-- Compile the test suite -->
     <target name="compile.tests" depends="compile" description="Compile all tests">
-        <javac source="17" target ="17" includeantruntime="true" 
+        <javac includeantruntime="true" 
                srcdir="test"
                destdir="bin"
                debug="yes">
