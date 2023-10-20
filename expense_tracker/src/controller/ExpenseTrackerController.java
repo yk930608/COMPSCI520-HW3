@@ -15,10 +15,15 @@ public class ExpenseTrackerController {
   
   private ExpenseTrackerModel model;
   private ExpenseTrackerView view;
+  private TransactionFilter filter;
 
   public ExpenseTrackerController(ExpenseTrackerModel model, ExpenseTrackerView view) {
     this.model = model;
     this.view = view;
+  }
+
+  public void setFilter(TransactionFilter filter) {
+    this.filter = filter;
   }
 
   public void refresh() {
@@ -41,17 +46,23 @@ public class ExpenseTrackerController {
     return true;
   }
 
-  public void applyFilter(TransactionFilter filter) {
-    List<Transaction> transactions = model.getTransactions();
-    List<Transaction> filteredTransactions = filter.filter(transactions);
-    List<Integer> rowIndexes = new ArrayList<>();
-    for (Transaction t : filteredTransactions) {
-      int rowIndex = transactions.indexOf(t);
-      if (rowIndex != -1) {
-        rowIndexes.add(rowIndex);
+  public void applyFilter() {
+    //null check for filter
+    if(filter!=null){
+      List<Transaction> transactions = model.getTransactions();
+      List<Transaction> filteredTransactions = filter.filter(transactions);
+      List<Integer> rowIndexes = new ArrayList<>();
+      for (Transaction t : filteredTransactions) {
+        int rowIndex = transactions.indexOf(t);
+        if (rowIndex != -1) {
+          rowIndexes.add(rowIndex);
+        }
       }
+      view.highlightRows(rowIndexes);
     }
-    view.highlightRows(rowIndexes);
+    else{
+      JOptionPane.showMessageDialog(view, "No filter applied");
+      view.toFront();}
 
   }
 }

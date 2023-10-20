@@ -45,7 +45,8 @@ public class ExpenseTrackerApp {
       CategoryFilter categoryFilter = new CategoryFilter(categoryFilterInput);
       if (categoryFilterInput != null) {
           // controller.applyCategoryFilter(categoryFilterInput);
-          controller.applyFilter(categoryFilter);
+          controller.setFilter(categoryFilter);
+          controller.applyFilter();
       }
      }catch(IllegalArgumentException exception) {
     JOptionPane.showMessageDialog(view, exception.getMessage());
@@ -59,7 +60,8 @@ public class ExpenseTrackerApp {
       double amountFilterInput = view.getAmountFilterInput();
       AmountFilter amountFilter = new AmountFilter(amountFilterInput);
       if (amountFilterInput != 0.0) {
-          controller.applyFilter(amountFilter);
+          controller.setFilter(amountFilter);
+          controller.applyFilter();
       }
     }catch(IllegalArgumentException exception) {
     JOptionPane.showMessageDialog(view,exception.getMessage());
