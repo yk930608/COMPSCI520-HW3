@@ -10,6 +10,8 @@ public class CategoryFilter implements TransactionFilter {
     private String categoryFilter;
 
     public CategoryFilter(String categoryFilter) {
+        // Since the CategoryFilter constructor is public, 
+        // the input validation needs to be performed again.
         if(!InputValidation.isValidCategory(categoryFilter)){
             throw new IllegalArgumentException("Invalid category filter");
         }else{
