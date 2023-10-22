@@ -15,6 +15,11 @@ public class ExpenseTrackerController {
   
   private ExpenseTrackerModel model;
   private ExpenseTrackerView view;
+  /** 
+   * The Controller is applying the Strategy design pattern.
+   * This is the has-a relationship with the Strategy class 
+   * being used in the applyFilter method.
+   */
   private TransactionFilter filter;
 
   public ExpenseTrackerController(ExpenseTrackerModel model, ExpenseTrackerView view) {
@@ -23,6 +28,7 @@ public class ExpenseTrackerController {
   }
 
   public void setFilter(TransactionFilter filter) {
+    // Sets the Strategy class being used in the applyFilter method.
     this.filter = filter;
   }
 
@@ -49,6 +55,7 @@ public class ExpenseTrackerController {
   public void applyFilter() {
     //null check for filter
     if(filter!=null){
+      // Use the Strategy class to perform the desired filtering
       List<Transaction> transactions = model.getTransactions();
       List<Transaction> filteredTransactions = filter.filter(transactions);
       List<Integer> rowIndexes = new ArrayList<>();
