@@ -1,8 +1,11 @@
 // package test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Date;
 import java.util.List;
+import java.text.ParseException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +37,26 @@ public class TestExample {
         }
         return totalCost;
     }
-    
+
+
+    public void checkTransaction(double amount, String category, Transaction transaction) {
+	assertEquals(amount, transaction.getAmount(), 0.01);
+        assertEquals(category, transaction.getCategory());
+        String transactionDateString = transaction.getTimestamp();
+        Date transactionDate = null;
+        try {
+            transactionDate = Transaction.dateFormatter.parse(transactionDateString);
+        }
+        catch (ParseException pe) {
+            pe.printStackTrace();
+            transactionDate = null;
+        }
+        Date nowDate = new Date();
+        assertNotNull(transactionDate);
+        assertNotNull(nowDate);
+        // They may differ by 60 ms
+        assertTrue(nowDate.getTime() - transactionDate.getTime() < 60000);
+    }
 
 
     @Test
@@ -43,13 +65,20 @@ public class TestExample {
         assertEquals(0, model.getTransactions().size());
     
         // Perform the action: Add a transaction
-        assertTrue(controller.addTransaction(50.00, "food"));
+	double amount = 50.0;
+	String category = "food";
+        assertTrue(controller.addTransaction(amount, category));
     
-        // Post-condition: List of transactions contains one transaction
+        // Post-condition: List of transactions contains only
+	//                 the added transaction	
         assertEquals(1, model.getTransactions().size());
     
         // Check the contents of the list
-        assertEquals(50.00, getTotalCost(), 0.01);
+	Transaction firstTransaction = model.getTransactions().get(0);
+	checkTransaction(amount, category, firstTransaction);
+	
+	// Check the total amount
+        assertEquals(amount, getTotalCost(), 0.01);
     }
 
 
@@ -59,13 +88,20 @@ public class TestExample {
         assertEquals(0, model.getTransactions().size());
     
         // Perform the action: Add and remove a transaction
-        Transaction addedTransaction = new Transaction(50.00, "Groceries");
+	double amount = 50.0;
+	String category = "food";
+        Transaction addedTransaction = new Transaction(amount, category);
         model.addTransaction(addedTransaction);
     
-        // Pre-condition: List of transactions contains one transaction
+        // Pre-condition: List of transactions contains only
+	//                the added transaction
         assertEquals(1, model.getTransactions().size());
-    
-        // Perform the action: Remove the transaction
+	Transaction firstTransaction = model.getTransactions().get(0);
+	checkTransaction(amount, category, firstTransaction);
+
+	assertEquals(amount, getTotalCost(), 0.01);
+	
+	// Perform the action: Remove the transaction
         model.removeTransaction(addedTransaction);
     
         // Post-condition: List of transactions is empty

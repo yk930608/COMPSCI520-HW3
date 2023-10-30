@@ -8,6 +8,8 @@ import java.util.List;
 
 public class Transaction {
 
+  public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+    
   //final means that the variable cannot be changed
   private final double amount;
   private final String category;
@@ -50,8 +52,7 @@ public class Transaction {
   }
   //private helper method to generate timestamp
   private String generateTimestamp() {
-    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");  
-    return sdf.format(new Date());
+     return dateFormatter.format(new Date());
   }
 
 }
