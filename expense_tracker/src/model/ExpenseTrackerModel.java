@@ -13,6 +13,10 @@ public class ExpenseTrackerModel {
   }
 
   public void addTransaction(Transaction t) {
+    // Perform input validation to guarantee that all transactions added are non-null.
+    if (t == null) {
+      throw new IllegalArgumentException("The new transaction must be non-null.");
+    }
     transactions.add(t);
   }
 
