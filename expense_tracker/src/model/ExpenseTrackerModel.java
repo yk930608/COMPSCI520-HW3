@@ -6,6 +6,7 @@ import java.util.List;
 
 public class ExpenseTrackerModel {
 
+  //encapsulation - data integrity
   private List<Transaction> transactions;
 
   public ExpenseTrackerModel() {
