@@ -1,5 +1,7 @@
 package model;
 
+import controller.InputValidation;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +14,15 @@ public class Transaction {
   private final String timestamp;
 
   public Transaction(double amount, String category) {
+    // Since this is a public constructor, perform input validation
+    // to guarantee that the amount and category are both valid
+    if (InputValidation.isValidAmount(amount) == false) {
+	throw new IllegalArgumentException("The amount is not valid.");
+    }
+    if (InputValidation.isValidCategory(category) == false) {
+	throw new IllegalArgumentException("The category is not valid.");
+    }
+      
     this.amount = amount;
     this.category = category;
     this.timestamp = generateTimestamp();
