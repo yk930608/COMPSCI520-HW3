@@ -53,7 +53,15 @@ public class ExpenseTrackerApp {
     view.toFront();
    }});
 
-
+    // Handle undo transaction button clicks
+    view.getUndoBtn().addActionListener(e -> {
+          boolean undo = controller.undoRecord();
+          // If there is no entry to undo display a message
+          if (!undo) {
+              JOptionPane.showMessageDialog(view, "No entry is available!");
+              view.toFront();
+          }
+      });
     // Add action listener to the "Apply Amount Filter" button
     view.addApplyAmountFilterListener(e -> {
       try{
@@ -67,7 +75,6 @@ public class ExpenseTrackerApp {
     JOptionPane.showMessageDialog(view,exception.getMessage());
     view.toFront();
    }});
-    
 
   }
 }
