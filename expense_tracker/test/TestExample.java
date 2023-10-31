@@ -1,12 +1,11 @@
 // package test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 import java.util.List;
 import java.text.ParseException;
 
+import model.Filter.AmountFilter;
+import model.Filter.CategoryFilter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,6 +13,10 @@ import controller.ExpenseTrackerController;
 import model.ExpenseTrackerModel;
 import model.Transaction;
 import view.ExpenseTrackerView;
+
+import javax.swing.*;
+
+import static org.junit.Assert.*;
 
 
 public class TestExample {
@@ -112,5 +115,69 @@ public class TestExample {
         double totalCost = getTotalCost();
         assertEquals(0.00, totalCost, 0.01);
     }
-    
+
+    @Test
+    public void testAddTransactionToView(){
+        assertEquals(0, model.getTransactions().size());
+        double amount = 50.0;
+        String category = "food";
+        assertTrue(controller.addTransaction(amount, category));
+        assertEquals(1, model.getTransactions().size());
+        Transaction actualTransactions = model.getTransactions().get(0);
+        List<Transaction> expectedTransactions = view.getTransactionsTable();
+        compareTransaction(actualTransactions, expectedTransactions.get(0));
+        checkTransaction(amount, category, actualTransactions);
+        assertEquals(amount, getTotalCost(), 0.01);
+    }
+
+    @Test
+    public void testInvalidInputHandling(){
+      double invalidAmount = 0.0;
+      String validCategory = "food";
+      assertFalse(controller.addTransaction(invalidAmount, validCategory));
+    }
+
+    @Test
+    public void testFilterByAmount() {
+      Transaction expectedTransaction = new Transaction(1.0, "food");
+      Transaction otherFoodTransaction = new Transaction(2.0, "food");
+      Transaction otherBillTransaction = new Transaction(2.0, "bills");
+      List<Transaction> transactions = List.of(expectedTransaction, otherBillTransaction, otherFoodTransaction);
+      AmountFilter filter = new AmountFilter(1.0);
+      List<Transaction> filteredTransactions = filter.filter(transactions);
+      assertEquals(filteredTransactions.size(), 1);
+      compareTransaction(filteredTransactions.get(0), expectedTransaction);
+    }
+
+    @Test
+    public void testFilterByCategory() {
+        Transaction otherFoodTransaction1 = new Transaction(1.0, "food");
+        Transaction otherFoodTransaction2 = new Transaction(2.0, "food");
+        Transaction expectedTransaction = new Transaction(2.0, "bills");
+        List<Transaction> transactions = List.of(expectedTransaction, otherFoodTransaction1, otherFoodTransaction2);
+        CategoryFilter filter = new CategoryFilter("bills");
+        List<Transaction> filteredTransactions = filter.filter(transactions);
+        assertEquals(filteredTransactions.size(), 1);
+        compareTransaction(filteredTransactions.get(0), expectedTransaction);
+    }
+    @Test
+    public void testUndoDisallowed() {
+      assertFalse(controller.undoRecord());
+    }
+
+    @Test
+    public void testUndoAllowed() {
+      Transaction transaction = new Transaction(1.0, "food");
+      model.addTransaction(transaction);
+      assertTrue(controller.undoRecord());
+      List<Transaction> expectedTransactions = view.getTransactionsTable();
+      assertEquals(expectedTransactions.size(),0);
+      assertEquals(0.0, getTotalCost(), 0.01);
+    }
+
+    private void compareTransaction(Transaction actualTransition, Transaction expectTransition){
+        assertEquals(actualTransition.getAmount(), expectTransition.getAmount(), 0.0);
+        assertEquals(actualTransition.getCategory(), expectTransition.getCategory());
+        assertEquals(actualTransition.getTimestamp(), expectTransition.getTimestamp());
+    }
 }

@@ -15,6 +15,18 @@ public class Transaction {
   private final String category;
   private final String timestamp;
 
+  public Transaction(double amount, String category, String timestamp){
+    if (InputValidation.isValidAmount(amount) == false) {
+      throw new IllegalArgumentException("The amount is not valid.");
+    }
+    if (InputValidation.isValidCategory(category) == false) {
+      throw new IllegalArgumentException("The category is not valid.");
+    }
+
+    this.amount = amount;
+    this.category = category;
+    this.timestamp = timestamp;
+  }
   public Transaction(double amount, String category) {
     // Since this is a public constructor, perform input validation
     // to guarantee that the amount and category are both valid
@@ -24,7 +36,7 @@ public class Transaction {
     if (InputValidation.isValidCategory(category) == false) {
 	throw new IllegalArgumentException("The category is not valid.");
     }
-      
+
     this.amount = amount;
     this.category = category;
     this.timestamp = generateTimestamp();
@@ -54,5 +66,4 @@ public class Transaction {
   private String generateTimestamp() {
      return dateFormatter.format(new Date());
   }
-
 }

@@ -8,6 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseTrackerView extends JFrame {
@@ -94,7 +95,16 @@ public class ExpenseTrackerView extends JFrame {
 
 
     public List<Transaction> getTransactionsTable() {
-        return (List<Transaction>) transactionsTable;
+        List<Transaction> result = new ArrayList<>();
+        int numberOfRows = transactionsTable.getRowCount();
+        for(int i = 0; i < numberOfRows -1; i++){
+            double curAmount = Float.parseFloat(transactionsTable.getValueAt(i, 1).toString());
+            String curCategory = transactionsTable.getValueAt(i, 2).toString();
+            String curDate = transactionsTable.getValueAt(i, 3).toString();
+            Transaction curTransition = new Transaction(curAmount, curCategory, curDate);
+            result.add(curTransition);
+        }
+        return result;
     }
 
     public double getAmountField() {
