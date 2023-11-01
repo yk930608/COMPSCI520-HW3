@@ -34,19 +34,20 @@ public class ExpenseTrackerController {
         view.refreshTable(transactions);
     }
 
-    public boolean addTransaction(double amount, String category) {
+    public void addTransaction(double amount, String category) {
         if (!InputValidation.isValidAmount(amount)) {
-            return false;
+            view.displayMessage("Invalid amount or category entered");
+            return;
         }
         if (!InputValidation.isValidCategory(category)) {
-            return false;
+            view.displayMessage("Invalid amount or category entered");
+            return;
         }
 
         Transaction t = new Transaction(amount, category);
         model.addTransaction(t);
         view.getTableModel().addRow(new Object[]{t.getAmount(), t.getCategory(), t.getTimestamp()});
         refresh();
-        return true;
     }
 
     public void applyFilter() {
@@ -70,13 +71,13 @@ public class ExpenseTrackerController {
 
     }
 
-    public boolean undoRecord() {
+    public void undoRecord() {
         List<Transaction> currentTransactions = model.getTransactions();
         List<Transaction> transactionsAfterUndo = new ArrayList<>();
         List<Integer> selectedRow = new ArrayList<>(Arrays.stream(view.getUserSelection()).boxed().toList());
         // If the transaction table is empty return false
         if (currentTransactions.isEmpty()) {
-            return false;
+            view.displayMessage("No entry is available!");
         }
         // If no row is been selected, remove the last row
         if (selectedRow.isEmpty()) {
@@ -91,6 +92,5 @@ public class ExpenseTrackerController {
         }
         model.updateTransaction(transactionsAfterUndo);
         view.refreshTable(transactionsAfterUndo);
-        return true;
     }
 }

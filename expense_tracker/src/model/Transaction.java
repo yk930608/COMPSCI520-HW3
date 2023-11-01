@@ -16,13 +16,6 @@ public class Transaction {
   private final String timestamp;
 
   public Transaction(double amount, String category, String timestamp){
-    if (InputValidation.isValidAmount(amount) == false) {
-      throw new IllegalArgumentException("The amount is not valid.");
-    }
-    if (InputValidation.isValidCategory(category) == false) {
-      throw new IllegalArgumentException("The category is not valid.");
-    }
-
     this.amount = amount;
     this.category = category;
     this.timestamp = timestamp;

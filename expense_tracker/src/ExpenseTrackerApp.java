@@ -1,4 +1,5 @@
-import javax.swing.JOptionPane;
+import javax.swing.*;
+
 import controller.ExpenseTrackerController;
 import model.ExpenseTrackerModel;
 import view.ExpenseTrackerView;
@@ -16,7 +17,6 @@ public class ExpenseTrackerApp {
     ExpenseTrackerModel model = new ExpenseTrackerModel();
     ExpenseTrackerView view = new ExpenseTrackerView();
     ExpenseTrackerController controller = new ExpenseTrackerController(model, view);
-    
 
     // Initialize view
     view.setVisible(true);
@@ -30,12 +30,7 @@ public class ExpenseTrackerApp {
       String category = view.getCategoryField();
       
       // Call controller to add transaction
-      boolean added = controller.addTransaction(amount, category);
-      
-      if (!added) {
-        JOptionPane.showMessageDialog(view, "Invalid amount or category entered");
-        view.toFront();
-      }
+      controller.addTransaction(amount, category);
     });
 
       // Add action listener to the "Apply Category Filter" button
@@ -49,18 +44,14 @@ public class ExpenseTrackerApp {
           controller.applyFilter();
       }
      }catch(IllegalArgumentException exception) {
-    JOptionPane.showMessageDialog(view, exception.getMessage());
-    view.toFront();
+          view.displayMessage(exception.getMessage());
+          view.toFront();
    }});
 
     // Handle undo transaction button clicks
     view.getUndoBtn().addActionListener(e -> {
-          boolean undo = controller.undoRecord();
+          controller.undoRecord();
           // If there is no entry to undo display a message
-          if (!undo) {
-              JOptionPane.showMessageDialog(view, "No entry is available!");
-              view.toFront();
-          }
       });
     // Add action listener to the "Apply Amount Filter" button
     view.addApplyAmountFilterListener(e -> {
@@ -72,8 +63,8 @@ public class ExpenseTrackerApp {
           controller.applyFilter();
       }
     }catch(IllegalArgumentException exception) {
-    JOptionPane.showMessageDialog(view,exception.getMessage());
-    view.toFront();
+          view.displayMessage(exception.getMessage());
+          view.toFront();
    }});
 
   }

@@ -19,6 +19,8 @@ public class ExpenseTrackerView extends JFrame {
     private JTextField categoryField;
     private final DefaultTableModel model;
 
+    private final JOptionPane jOptionPane;
+    private JDialog errorDialog;
     // private JTextField dateFilterField;
     private final JTextField categoryFilterField;
     private final JButton categoryFilterBtn;
@@ -34,7 +36,8 @@ public class ExpenseTrackerView extends JFrame {
         String[] columnNames = {"serial", "Amount", "Category", "Date"};
         this.model = new DefaultTableModel(columnNames, 0);
 
-
+        this.jOptionPane = new JOptionPane();
+        this.errorDialog = this.jOptionPane.createDialog("Error");
         // Create table
         transactionsTable = new JTable(model);
 
@@ -210,5 +213,17 @@ public class ExpenseTrackerView extends JFrame {
         return transactionsTable.getSelectedRows();
     }
 
+    public JOptionPane getjOptionPane() { return this.jOptionPane; }
 
+    public void displayMessage(Object newMessage) {
+        this.jOptionPane.setMessage(newMessage);
+        this.errorDialog = this.jOptionPane.createDialog("error");
+        this.errorDialog.setLocationRelativeTo(this);
+        this.errorDialog.setVisible(true);
+        this.toFront();
+    }
+
+    public JDialog getJDialog(){
+        return this.errorDialog;
+    }
 }

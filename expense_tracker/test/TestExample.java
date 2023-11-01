@@ -22,6 +22,7 @@ public class TestExample {
     private ExpenseTrackerView view;
     private ExpenseTrackerController controller;
 
+
     @Before
     public void setup() {
         model = new ExpenseTrackerModel();
@@ -66,7 +67,7 @@ public class TestExample {
         // Perform the action: Add a transaction
         double amount = 50.0;
         String category = "food";
-        assertTrue(controller.addTransaction(amount, category));
+        controller.addTransaction(amount, category);
 
         // Post-condition: List of transactions contains only
         //                 the added transaction
@@ -117,7 +118,7 @@ public class TestExample {
         assertEquals(0, model.getTransactions().size());
         double amount = 50.0;
         String category = "food";
-        assertTrue(controller.addTransaction(amount, category));
+        controller.addTransaction(amount, category);
         assertEquals(1, model.getTransactions().size());
         Transaction actualTransactions = model.getTransactions().get(0);
         List<Transaction> expectedTransactions = view.getTransactionsTable();
@@ -130,7 +131,9 @@ public class TestExample {
     public void testInvalidInputHandling() {
         double invalidAmount = 0.0;
         String validCategory = "food";
-        assertFalse(controller.addTransaction(invalidAmount, validCategory));
+        controller.addTransaction(invalidAmount, validCategory);
+        assertEquals(view.getjOptionPane().getMessage(), "Invalid amount or category entered");
+        view.getJDialog().dispose();
     }
 
     @Test
@@ -159,14 +162,15 @@ public class TestExample {
 
     @Test
     public void testUndoDisallowed() {
-        assertFalse(controller.undoRecord());
+        controller.undoRecord();
+        assertEquals(view.getjOptionPane().getMessage(), "No entry is available!");
     }
 
     @Test
     public void testUndoAllowed() {
         Transaction transaction = new Transaction(1.0, "food");
         model.addTransaction(transaction);
-        assertTrue(controller.undoRecord());
+        controller.undoRecord();
         List<Transaction> expectedTransactions = view.getTransactionsTable();
         assertEquals(expectedTransactions.size(), 0);
         assertEquals(0.0, getTotalCost(), 0.01);
