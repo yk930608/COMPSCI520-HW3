@@ -208,7 +208,6 @@ public class ExpenseTrackerView extends JFrame {
 
         transactionsTable.repaint();
     }
-
     public int[] getUserSelection() {
         return transactionsTable.getSelectedRows();
     }
@@ -226,4 +225,6 @@ public class ExpenseTrackerView extends JFrame {
     public JDialog getJDialog(){
         return this.errorDialog;
     }
+
+    public JTable getJTable() {return this.transactionsTable; }
 }

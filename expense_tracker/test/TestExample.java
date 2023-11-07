@@ -9,6 +9,10 @@ import org.junit.Before;
 import org.junit.Test;
 import view.ExpenseTrackerView;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import java.awt.*;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -141,11 +145,21 @@ public class TestExample {
         Transaction expectedTransaction = new Transaction(1.0, "food");
         Transaction otherFoodTransaction = new Transaction(2.0, "food");
         Transaction otherBillTransaction = new Transaction(2.0, "bills");
+        int row = 0;
+        Color expectedColor = new Color(173, 255, 168);
         List<Transaction> transactions = List.of(expectedTransaction, otherBillTransaction, otherFoodTransaction);
         AmountFilter filter = new AmountFilter(1.0);
         List<Transaction> filteredTransactions = filter.filter(transactions);
         assertEquals(filteredTransactions.size(), 1);
         compareTransaction(filteredTransactions.get(0), expectedTransaction);
+        JTable viewJTable = view.getJTable();
+        controller.setFilter(filter);
+        transactions.forEach(transaction -> {model.addTransaction(transaction);});
+        controller.refresh();
+        controller.applyFilter();
+        Component highlightedRow = viewJTable
+                .getDefaultRenderer(Object.class).getTableCellRendererComponent(viewJTable, null, false, false, row,0);
+        assertEquals(highlightedRow.getBackground(), expectedColor);
     }
 
     @Test
@@ -153,11 +167,21 @@ public class TestExample {
         Transaction otherFoodTransaction1 = new Transaction(1.0, "food");
         Transaction otherFoodTransaction2 = new Transaction(2.0, "food");
         Transaction expectedTransaction = new Transaction(2.0, "bills");
+        int row = 0;
+        Color expectedColor = new Color(173, 255, 168);
         List<Transaction> transactions = List.of(expectedTransaction, otherFoodTransaction1, otherFoodTransaction2);
         CategoryFilter filter = new CategoryFilter("bills");
         List<Transaction> filteredTransactions = filter.filter(transactions);
         assertEquals(filteredTransactions.size(), 1);
         compareTransaction(filteredTransactions.get(0), expectedTransaction);
+        JTable viewJTable = view.getJTable();
+        controller.setFilter(filter);
+        transactions.forEach(transaction -> {model.addTransaction(transaction);});
+        controller.refresh();
+        controller.applyFilter();
+        Component highlightedRow = viewJTable
+                .getDefaultRenderer(Object.class).getTableCellRendererComponent(viewJTable, null, false, false, row,0);
+        assertEquals(highlightedRow.getBackground(), expectedColor);
     }
 
     @Test
