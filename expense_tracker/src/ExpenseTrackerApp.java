@@ -1,4 +1,5 @@
-import javax.swing.JOptionPane;
+import javax.swing.*;
+
 import controller.ExpenseTrackerController;
 import model.ExpenseTrackerModel;
 import view.ExpenseTrackerView;
@@ -16,7 +17,6 @@ public class ExpenseTrackerApp {
     ExpenseTrackerModel model = new ExpenseTrackerModel();
     ExpenseTrackerView view = new ExpenseTrackerView();
     ExpenseTrackerController controller = new ExpenseTrackerController(model, view);
-    
 
     // Initialize view
     view.setVisible(true);
@@ -25,6 +25,7 @@ public class ExpenseTrackerApp {
 
     // Handle add transaction button clicks
     view.getAddTransactionBtn().addActionListener(e -> controller.performAddTransactionBtnClick());
+
 
       // Add action listener to the "Apply Category Filter" button
     view.addApplyCategoryFilterListener(e -> {
@@ -37,12 +38,13 @@ public class ExpenseTrackerApp {
           controller.applyFilter();
       }
      }catch(IllegalArgumentException exception) {
-    JOptionPane.showMessageDialog(view, exception.getMessage());
-    view.toFront();
+          view.displayMessage(exception.getMessage());
+          view.toFront();
    }});
 
     // Handle undo transaction button clicks
     view.getUndoBtn().addActionListener(e -> controller.performUnDoBtnClick());
+
     // Add action listener to the "Apply Amount Filter" button
     view.addApplyAmountFilterListener(e -> {
       try{
@@ -53,8 +55,8 @@ public class ExpenseTrackerApp {
           controller.applyFilter();
       }
     }catch(IllegalArgumentException exception) {
-    JOptionPane.showMessageDialog(view,exception.getMessage());
-    view.toFront();
+          view.displayMessage(exception.getMessage());
+          view.toFront();
    }});
 
   }
