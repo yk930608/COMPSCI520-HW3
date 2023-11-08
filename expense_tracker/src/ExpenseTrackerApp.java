@@ -33,7 +33,7 @@ public class ExpenseTrackerApp {
       boolean added = controller.addTransaction(amount, category);
       
       if (!added) {
-        JOptionPane.showMessageDialog(view, "Invalid amount or category entered");
+          view.getInvalidInputDialog().setVisible(true);
         view.toFront();
       }
     });
@@ -58,7 +58,7 @@ public class ExpenseTrackerApp {
           boolean undo = controller.undoRecord();
           // If there is no entry to undo display a message
           if (!undo) {
-              JOptionPane.showMessageDialog(view, "No entry is available!");
+              view.getInvalidUndoDialog().setVisible(true);
               view.toFront();
           }
       });

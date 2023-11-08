@@ -26,7 +26,10 @@ public class ExpenseTrackerView extends JFrame {
     private final JTextField amountFilterField;
     private final JButton amountFilterBtn;
     private final JButton undoBtn;
-
+    private final JOptionPane  invalidInputJOptionPane;
+    private final JOptionPane  invalidUndoJOptionPane;
+    private final JDialog invalidInputDialog;
+    private final JDialog invalidUndoDialog;
     public ExpenseTrackerView() {
         setTitle("Expense Tracker"); // Set title
         setSize(600, 400); // Make GUI larger
@@ -61,7 +64,10 @@ public class ExpenseTrackerView extends JFrame {
         amountFilterBtn = new JButton("Filter by Amount");
 
         undoBtn = new JButton("Undo");
-
+        invalidInputJOptionPane = new JOptionPane("Invalid amount or category entered");
+        invalidInputDialog = invalidInputJOptionPane.createDialog("INVALID INPUT");
+        invalidUndoJOptionPane = new JOptionPane("No entry is available!");
+        invalidUndoDialog = invalidUndoJOptionPane.createDialog("UNDO ERROR");
 
         // Layout components
         JPanel inputPanel = new JPanel();
@@ -210,5 +216,10 @@ public class ExpenseTrackerView extends JFrame {
         return transactionsTable.getSelectedRows();
     }
 
+    public JTable getJTable() {return this.transactionsTable; }
+
+    public JDialog getInvalidInputDialog() {return this.invalidInputDialog; }
+
+    public JDialog getInvalidUndoDialog() {return this.invalidUndoDialog; }
 
 }
