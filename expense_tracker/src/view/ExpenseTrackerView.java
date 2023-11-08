@@ -11,6 +11,8 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.swing.JOptionPane.CLOSED_OPTION;
+
 public class ExpenseTrackerView extends JFrame {
 
     private final JTable transactionsTable;
@@ -64,11 +66,30 @@ public class ExpenseTrackerView extends JFrame {
         amountFilterBtn = new JButton("Filter by Amount");
 
         undoBtn = new JButton("Undo");
-        invalidInputJOptionPane = new JOptionPane("Invalid amount or category entered");
-        invalidInputDialog = invalidInputJOptionPane.createDialog("INVALID INPUT");
-        invalidUndoJOptionPane = new JOptionPane("No entry is available!");
-        invalidUndoDialog = invalidUndoJOptionPane.createDialog("UNDO ERROR");
 
+        invalidInputJOptionPane = new JOptionPane("Invalid amount or category entered",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                new Object[]{},
+                null
+        );
+        invalidInputDialog = new JDialog(this);
+        invalidInputDialog.setSize(300,80);
+        invalidInputDialog.setTitle("INVALID INPUT");
+        invalidInputDialog.add(invalidInputJOptionPane);
+
+        invalidUndoJOptionPane = new JOptionPane("No entry is available!",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                new Object[]{},
+                null
+        );
+        invalidUndoDialog = new JDialog(this);
+        invalidUndoDialog.setSize(200,80);
+        invalidUndoDialog.setTitle("UNDO ERROR");
+        invalidUndoDialog.add(invalidUndoJOptionPane);
         // Layout components
         JPanel inputPanel = new JPanel();
         inputPanel.add(amountLabel);
@@ -221,5 +242,23 @@ public class ExpenseTrackerView extends JFrame {
     public JDialog getInvalidInputDialog() {return this.invalidInputDialog; }
 
     public JDialog getInvalidUndoDialog() {return this.invalidUndoDialog; }
+
+    public void showInvalidInputDialog() {
+        this.invalidInputDialog.setLocationRelativeTo(this);
+        this.invalidInputDialog.setVisible(true);
+    }
+
+    public void showInvalidUndoDialog() {
+        this.invalidUndoDialog.setLocationRelativeTo(this);
+        this.invalidUndoDialog.setVisible(true);
+    }
+
+    public JOptionPane getInvalidInputJOptionPane() {
+        return this.invalidInputJOptionPane;
+    }
+
+    public JOptionPane getInvalidUndoJOptionPane() {
+        return this.invalidUndoJOptionPane;
+    }
 
 }

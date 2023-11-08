@@ -24,19 +24,7 @@ public class ExpenseTrackerApp {
 
 
     // Handle add transaction button clicks
-    view.getAddTransactionBtn().addActionListener(e -> {
-      // Get transaction data from view
-      double amount = view.getAmountField();
-      String category = view.getCategoryField();
-      
-      // Call controller to add transaction
-      boolean added = controller.addTransaction(amount, category);
-      
-      if (!added) {
-          view.getInvalidInputDialog().setVisible(true);
-        view.toFront();
-      }
-    });
+    view.getAddTransactionBtn().addActionListener(e -> controller.performAddTransactionBtnClick());
 
       // Add action listener to the "Apply Category Filter" button
     view.addApplyCategoryFilterListener(e -> {
@@ -54,14 +42,7 @@ public class ExpenseTrackerApp {
    }});
 
     // Handle undo transaction button clicks
-    view.getUndoBtn().addActionListener(e -> {
-          boolean undo = controller.undoRecord();
-          // If there is no entry to undo display a message
-          if (!undo) {
-              view.getInvalidUndoDialog().setVisible(true);
-              view.toFront();
-          }
-      });
+    view.getUndoBtn().addActionListener(e -> controller.performUnDoBtnClick());
     // Add action listener to the "Apply Amount Filter" button
     view.addApplyAmountFilterListener(e -> {
       try{

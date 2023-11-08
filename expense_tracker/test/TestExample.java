@@ -5,13 +5,12 @@ import model.ExpenseTrackerModel;
 import model.Filter.AmountFilter;
 import model.Filter.CategoryFilter;
 import model.Transaction;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import view.ExpenseTrackerView;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.text.ParseException;
 import java.util.Date;
@@ -19,19 +18,21 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-
 public class TestExample {
 
     private ExpenseTrackerModel model;
     private ExpenseTrackerView view;
     private ExpenseTrackerController controller;
-
+    private testDialogShowedView testDialogShowedView;
+    private ExpenseTrackerController testDialogShowedController;
 
     @Before
     public void setup() {
         model = new ExpenseTrackerModel();
         view = new ExpenseTrackerView();
         controller = new ExpenseTrackerController(model, view);
+        testDialogShowedView = new testDialogShowedView();
+        testDialogShowedController = new ExpenseTrackerController(model, testDialogShowedView);
     }
 
     public double getTotalCost() {
@@ -133,10 +134,17 @@ public class TestExample {
 
     @Test
     public void testInvalidInputHandling() {
-        double invalidAmount = 0.0;
-        String validCategory = "food";
-        controller.addTransaction(invalidAmount, validCategory);
+        JFormattedTextField invalidAmount = new JFormattedTextField("0.0");
+        JFormattedTextField validCategory = new JFormattedTextField("food");
+        String invalidInputMessage = "Invalid amount or category entered";
+        String invalidInputTitle = "INVALID INPUT";
+        testDialogShowedView.setAmountField(invalidAmount);
+        testDialogShowedView.setCategoryField(validCategory);
 
+        testDialogShowedController.performAddTransactionBtnClick();
+        assertTrue(testDialogShowedView.isInvalidInputShowed());
+        assertEquals(invalidInputTitle, testDialogShowedView.getInvalidInputDialog().getTitle());
+        assertEquals(invalidInputMessage, testDialogShowedView.getInvalidInputJOptionPane().getMessage());
     }
 
     @Test
@@ -185,7 +193,14 @@ public class TestExample {
 
     @Test
     public void testUndoDisallowed() {
-        controller.undoRecord();
+
+        String expectMessage = "No entry is available!";
+        String expectTitle = "UNDO ERROR";
+
+        testDialogShowedController.performUnDoBtnClick();
+        assertTrue(testDialogShowedView.isUndoDialogShowed());
+        assertEquals(expectTitle, testDialogShowedView.getInvalidUndoDialog().getTitle());
+        assertEquals(expectMessage, testDialogShowedView.getInvalidUndoJOptionPane().getMessage());
     }
 
     @Test
@@ -202,5 +217,41 @@ public class TestExample {
         assertEquals(actualTransition.getAmount(), expectTransition.getAmount(), 0.0);
         assertEquals(actualTransition.getCategory(), expectTransition.getCategory());
         assertEquals(actualTransition.getTimestamp(), expectTransition.getTimestamp());
+    }
+    @After
+    public void cleanup() {
+        model = null;
+        view = null;
+        controller = null;
+        testDialogShowedView = null;
+        testDialogShowedController = null;
+    }
+
+    class testDialogShowedView extends ExpenseTrackerView {
+
+        private boolean isInvalidInputShowed = false;
+        private boolean isUndoDialogShowed = false;
+
+        @Override
+        public void showInvalidUndoDialog() {
+            super.showInvalidUndoDialog();
+            this.isUndoDialogShowed = this.getInvalidUndoDialog().isVisible();
+            this.getInvalidUndoDialog().setVisible(false);
+        }
+
+        @Override
+        public void showInvalidInputDialog() {
+            super.showInvalidInputDialog();
+            this.isInvalidInputShowed = this.getInvalidInputDialog().isVisible();
+            this.getInvalidInputDialog().setVisible(false);
+        }
+
+        public boolean isUndoDialogShowed() {
+            return this.isUndoDialogShowed;
+        }
+
+        public boolean isInvalidInputShowed() {
+            return this.isInvalidInputShowed;
+        }
     }
 }
