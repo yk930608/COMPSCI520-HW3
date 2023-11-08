@@ -34,20 +34,19 @@ public class ExpenseTrackerController {
         view.refreshTable(transactions);
     }
 
-    public void addTransaction(double amount, String category) {
+    public boolean addTransaction(double amount, String category) {
         if (!InputValidation.isValidAmount(amount)) {
-            view.displayMessage("Invalid amount or category entered");
-            return;
+            return false;
         }
         if (!InputValidation.isValidCategory(category)) {
-            view.displayMessage("Invalid amount or category entered");
-            return;
+            return false;
         }
 
         Transaction t = new Transaction(amount, category);
         model.addTransaction(t);
         view.getTableModel().addRow(new Object[]{t.getAmount(), t.getCategory(), t.getTimestamp()});
         refresh();
+        return true;
     }
 
     public void applyFilter() {
@@ -71,27 +70,28 @@ public class ExpenseTrackerController {
 
     }
 
-    public void undoRecord() {
+    public boolean undoRecord() {
         List<Transaction> currentTransactions = model.getTransactions();
         List<Transaction> transactionsAfterUndo = new ArrayList<>();
         List<Integer> selectedRow = new ArrayList<>(Arrays.stream(view.getUserSelection()).boxed().toList());
         // If the transaction table is empty return false
         if (currentTransactions.isEmpty()) {
-            view.displayMessage("No entry is available!");
+            return false;
         }
         // If no row is been selected, remove the last row
         if (selectedRow.isEmpty()) {
-            selectedRow.add(currentTransactions.size()-1);
+            selectedRow.add(currentTransactions.size() - 1);
         }
         Set<Integer> removingIndexes = new HashSet<>(selectedRow);
         // If multiple rows are been selected, remove all these together
-        for (int i = 0; i < currentTransactions.size(); i++){
-            if(!removingIndexes.contains(i)) {
+        for (int i = 0; i < currentTransactions.size(); i++) {
+            if (!removingIndexes.contains(i)) {
                 transactionsAfterUndo.add(currentTransactions.get(i));
             }
         }
         model.updateTransaction(transactionsAfterUndo);
         view.refreshTable(transactionsAfterUndo);
+        return true;
     }
 
     public void performAddTransactionBtnClick() {

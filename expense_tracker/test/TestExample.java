@@ -11,8 +11,6 @@ import org.junit.Test;
 import view.ExpenseTrackerView;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.text.ParseException;
 import java.util.Date;
@@ -107,6 +105,7 @@ public class TestExample {
         checkTransaction(amount, category, firstTransaction);
 
         assertEquals(amount, getTotalCost(), 0.01);
+
         // Perform the action: Remove the transaction
         model.removeTransaction(addedTransaction);
 
@@ -194,6 +193,7 @@ public class TestExample {
 
     @Test
     public void testUndoDisallowed() {
+
         String expectMessage = "No entry is available!";
         String expectTitle = "UNDO ERROR";
 

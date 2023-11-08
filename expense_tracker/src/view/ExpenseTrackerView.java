@@ -11,29 +11,24 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.swing.JOptionPane.CLOSED_OPTION;
-
 public class ExpenseTrackerView extends JFrame {
 
     private final JTable transactionsTable;
     private final JButton addTransactionBtn;
-    private JFormattedTextField amountField;
-    private JTextField categoryField;
     private final DefaultTableModel model;
-
-    private final JOptionPane jOptionPane;
-    private JDialog errorDialog;
     // private JTextField dateFilterField;
     private final JTextField categoryFilterField;
     private final JButton categoryFilterBtn;
-
     private final JTextField amountFilterField;
     private final JButton amountFilterBtn;
     private final JButton undoBtn;
-    private final JOptionPane  invalidInputJOptionPane;
-    private final JOptionPane  invalidUndoJOptionPane;
+    private final JOptionPane invalidInputJOptionPane;
+    private final JOptionPane invalidUndoJOptionPane;
     private final JDialog invalidInputDialog;
     private final JDialog invalidUndoDialog;
+    private JFormattedTextField amountField;
+    private JTextField categoryField;
+
     public ExpenseTrackerView() {
         setTitle("Expense Tracker"); // Set title
         setSize(600, 400); // Make GUI larger
@@ -41,8 +36,7 @@ public class ExpenseTrackerView extends JFrame {
         String[] columnNames = {"serial", "Amount", "Category", "Date"};
         this.model = new DefaultTableModel(columnNames, 0);
 
-        this.jOptionPane = new JOptionPane();
-        this.errorDialog = this.jOptionPane.createDialog("Error");
+
         // Create table
         transactionsTable = new JTable(model);
 
@@ -78,7 +72,7 @@ public class ExpenseTrackerView extends JFrame {
                 null
         );
         invalidInputDialog = new JDialog(this);
-        invalidInputDialog.setSize(300,80);
+        invalidInputDialog.setSize(300, 80);
         invalidInputDialog.setTitle("INVALID INPUT");
         invalidInputDialog.add(invalidInputJOptionPane);
 
@@ -90,7 +84,7 @@ public class ExpenseTrackerView extends JFrame {
                 null
         );
         invalidUndoDialog = new JDialog(this);
-        invalidUndoDialog.setSize(200,80);
+        invalidUndoDialog.setSize(200, 80);
         invalidUndoDialog.setTitle("UNDO ERROR");
         invalidUndoDialog.add(invalidUndoJOptionPane);
         // Layout components
@@ -127,7 +121,7 @@ public class ExpenseTrackerView extends JFrame {
     public List<Transaction> getTransactionsTable() {
         List<Transaction> result = new ArrayList<>();
         int numberOfRows = transactionsTable.getRowCount();
-        for(int i = 0; i < numberOfRows -1; i++){
+        for (int i = 0; i < numberOfRows - 1; i++) {
             double curAmount = Float.parseFloat(transactionsTable.getValueAt(i, 1).toString());
             String curCategory = transactionsTable.getValueAt(i, 2).toString();
             String curDate = transactionsTable.getValueAt(i, 3).toString();
@@ -235,15 +229,22 @@ public class ExpenseTrackerView extends JFrame {
 
         transactionsTable.repaint();
     }
+
     public int[] getUserSelection() {
         return transactionsTable.getSelectedRows();
     }
 
-    public JTable getJTable() {return this.transactionsTable; }
+    public JTable getJTable() {
+        return this.transactionsTable;
+    }
 
-    public JDialog getInvalidInputDialog() {return this.invalidInputDialog; }
+    public JDialog getInvalidInputDialog() {
+        return this.invalidInputDialog;
+    }
 
-    public JDialog getInvalidUndoDialog() {return this.invalidUndoDialog; }
+    public JDialog getInvalidUndoDialog() {
+        return this.invalidUndoDialog;
+    }
 
     public void showInvalidInputDialog() {
         this.invalidInputDialog.setLocationRelativeTo(this);
@@ -263,5 +264,4 @@ public class ExpenseTrackerView extends JFrame {
         return this.invalidUndoJOptionPane;
     }
 
-    public JTable getJTable() {return this.transactionsTable; }
 }
