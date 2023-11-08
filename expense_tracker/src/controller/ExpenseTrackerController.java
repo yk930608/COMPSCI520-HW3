@@ -93,4 +93,24 @@ public class ExpenseTrackerController {
         model.updateTransaction(transactionsAfterUndo);
         view.refreshTable(transactionsAfterUndo);
     }
+
+    public void performAddTransactionBtnClick() {
+        double amount = view.getAmountField();
+        String category = view.getCategoryField();
+
+        // Call controller to add transaction
+        boolean added = this.addTransaction(amount, category);
+
+        if (!added) {
+            view.showInvalidInputDialog();
+        }
+    }
+
+    public void performUnDoBtnClick() {
+        boolean undo = this.undoRecord();
+        // If there is no entry to undo display a message
+        if (!undo) {
+            view.showInvalidUndoDialog();
+        }
+    }
 }

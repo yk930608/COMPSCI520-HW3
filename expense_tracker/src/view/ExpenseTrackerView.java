@@ -11,6 +11,8 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.swing.JOptionPane.CLOSED_OPTION;
+
 public class ExpenseTrackerView extends JFrame {
 
     private final JTable transactionsTable;
@@ -28,7 +30,10 @@ public class ExpenseTrackerView extends JFrame {
     private final JTextField amountFilterField;
     private final JButton amountFilterBtn;
     private final JButton undoBtn;
-
+    private final JOptionPane  invalidInputJOptionPane;
+    private final JOptionPane  invalidUndoJOptionPane;
+    private final JDialog invalidInputDialog;
+    private final JDialog invalidUndoDialog;
     public ExpenseTrackerView() {
         setTitle("Expense Tracker"); // Set title
         setSize(600, 400); // Make GUI larger
@@ -65,7 +70,29 @@ public class ExpenseTrackerView extends JFrame {
 
         undoBtn = new JButton("Undo");
 
+        invalidInputJOptionPane = new JOptionPane("Invalid amount or category entered",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                new Object[]{},
+                null
+        );
+        invalidInputDialog = new JDialog(this);
+        invalidInputDialog.setSize(300,80);
+        invalidInputDialog.setTitle("INVALID INPUT");
+        invalidInputDialog.add(invalidInputJOptionPane);
 
+        invalidUndoJOptionPane = new JOptionPane("No entry is available!",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                new Object[]{},
+                null
+        );
+        invalidUndoDialog = new JDialog(this);
+        invalidUndoDialog.setSize(200,80);
+        invalidUndoDialog.setTitle("UNDO ERROR");
+        invalidUndoDialog.add(invalidUndoJOptionPane);
         // Layout components
         JPanel inputPanel = new JPanel();
         inputPanel.add(amountLabel);
@@ -212,18 +239,28 @@ public class ExpenseTrackerView extends JFrame {
         return transactionsTable.getSelectedRows();
     }
 
-    public JOptionPane getjOptionPane() { return this.jOptionPane; }
+    public JTable getJTable() {return this.transactionsTable; }
 
-    public void displayMessage(Object newMessage) {
-        this.jOptionPane.setMessage(newMessage);
-        this.errorDialog = this.jOptionPane.createDialog("error");
-        this.errorDialog.setLocationRelativeTo(this);
-        this.errorDialog.setVisible(true);
-        this.toFront();
+    public JDialog getInvalidInputDialog() {return this.invalidInputDialog; }
+
+    public JDialog getInvalidUndoDialog() {return this.invalidUndoDialog; }
+
+    public void showInvalidInputDialog() {
+        this.invalidInputDialog.setLocationRelativeTo(this);
+        this.invalidInputDialog.setVisible(true);
     }
 
-    public JDialog getJDialog(){
-        return this.errorDialog;
+    public void showInvalidUndoDialog() {
+        this.invalidUndoDialog.setLocationRelativeTo(this);
+        this.invalidUndoDialog.setVisible(true);
+    }
+
+    public JOptionPane getInvalidInputJOptionPane() {
+        return this.invalidInputJOptionPane;
+    }
+
+    public JOptionPane getInvalidUndoJOptionPane() {
+        return this.invalidUndoJOptionPane;
     }
 
     public JTable getJTable() {return this.transactionsTable; }
