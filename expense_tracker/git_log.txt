@@ -1,3 +1,15 @@
+commit 759840bdc5cb92d87ac4bd127ae1f2db67497735
+Author: angelading <yi.ding.2091@gmail.com>
+Date:   Thu Nov 9 01:06:55 2023 -0500
+
+    Generated jdoc
+
+commit ff58f400289eb0410d2050fcaa7ef2212ad409e9
+Author: angelading <yi.ding.2091@gmail.com>
+Date:   Thu Nov 9 00:49:26 2023 -0500
+
+    Create git_log.txt
+
 commit faa6272170a488e9ba086acaf6322e5cd882503d
 Author: angelading <yi.ding.2091@gmail.com>
 Date:   Thu Nov 9 00:48:56 2023 -0500
