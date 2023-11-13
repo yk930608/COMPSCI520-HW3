@@ -7,6 +7,7 @@ import view.ExpenseTrackerView;
 
 import javax.swing.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ExpenseTrackerController {
 
@@ -73,7 +74,8 @@ public class ExpenseTrackerController {
     public boolean undoRecord() {
         List<Transaction> currentTransactions = model.getTransactions();
         List<Transaction> transactionsAfterUndo = new ArrayList<>();
-        List<Integer> selectedRow = new ArrayList<>(Arrays.stream(view.getUserSelection()).boxed().toList());
+        List<Integer> selectedRow = new ArrayList<>(Arrays.stream(view.getUserSelection()).boxed().collect(Collectors.toList()));
+
         // If the transaction table is empty return false
         if (currentTransactions.isEmpty()) {
             return false;
