@@ -1,5 +1,4 @@
 # Ignore build folders
-bin/
 
 # Ignore config files
 application.properties
